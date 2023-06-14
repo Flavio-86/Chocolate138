@@ -1,76 +1,190 @@
-// 1- Pacote
+// 1 - Pacote
 package apitest;
 
 import com.google.gson.Gson;
 import entities.AccountEntity;
 import io.restassured.response.Response;
+import org.testng.Assert;
+import org.testng.ITest;
 import org.testng.annotations.Test;
 
-import java.net.URI;
-
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.stringContainsInOrder;
 
-
-// 2- Biblioteca
-// 3- Classe
+// 2 - Bibliotecas
+// 3 - Classe
 public class Account {
-    //Atributos
+    // 3.1 - Atributos
+    String userId;
+    String ct = "application/json"; // contentType da API
+    String jsonBody; // guardar o json que será enviado
+    String uri = "https://bookstore.toolsqa.com/Account/v1/"; // Endereço Base
+    Response resposta; // guardar o retorno da API
+    String token; // guardar o token - autenticação do usuário
 
-    // Instanciar Classes externas
+    // 3.1.2 Instanciar Classes Externas
     Gson gson = new Gson(); // Instancia o objeto de conversão classe para json
+    AccountEntity account = new AccountEntity(); // Instancia a entidade usuario
+    // 3.2 - Métodos e Funções
 
-    //Métodos e funções
-
-    //Método #1 - Criar Usuário
-
-    @Test
+    // Método #1 - Criar Usuário
+    @Test(priority = 1)
     public void testCreateUser(){
         // Arrange - Configura
-        AccountEntity account = new AccountEntity(); // Intancia a entidade usuario
-        account.userName = "charlie202"; // Entrada e Saida (Resultado esperado)
-        account.password = "P@ss0rd1";  // Entrada
 
-        String jsonBody = gson.toJson(account); // converte a entidade account usuário no formato json
+        account.userName = "charlie617"; // entrada e saida (resultado esperado)
+        account.password = "P@ss0rd1"; // entrada
+
+        jsonBody = gson.toJson(account);  // Converte a entidade usuario no formato json
 
         // Act - Executa
 
-        // Dado  - Quando - Então
-        // Given - When   - then
-        Response resposta = (Response) given()       // dado
-                .contentType("application/json") // Tipo de conteudo
-                .log().all()                     // Registre tudo
-                .body(jsonBody)   //Corpo da msg que será enviada
-        .when() // Quando
-                .post( "https://bookstore.toolsqa.com/Account/v1/User")
+        // Dado - Quando - Então
+        // Given - When - Then
+        resposta = (Response) given()      // dado
+                .contentType(ct)    // tipo do conteudo
+                .log().all()                        // registre tudo na ida
+                .body(jsonBody)    // corpo da mensagem que será enviada
+                .when() // quando
+                .post(uri + "User")
                 // Assert - Valida
-        .then() // Então
-                .log().all()        // Registra tudo que volta
-                .statusCode(201) // Valide o Comunicação
-                .body("username", is(account.userName))
+                .then() // então
+                .log().all()        // registre tudo na volta
+                .statusCode(201) // valide a comunicação
+                .body("username", is(account.userName)) // valida o usuario
                 .extract()
-        ; // fim do rest assured
+        ; // fim da linha do REST-assured
 
-        // extrair o userId (Identificação do usuário)
+        // extrair o userID (identificação do usuário)
 
-        String userId = resposta.jsonPath().getString("userID");
+        userId = resposta.jsonPath().getString("userID");
         System.out.println("UserID extraido: " + userId);
 
 
     } // fim do método de criação de usuário
 
-
+    @Test(priority = 2)
     public void testGenerateToken(){
         // Configura
+        // --> Dados de Entrada são fornecidos pela AccountEntity
+        // --> Resultado Esperado é que ele receba um token
 
-        // executa
+        // Executa
+        resposta = (Response) given()
+                .contentType(ct)
+                .log().all()
+                .body(jsonBody)
+                .when()
+                .post(uri + "GenerateToken")
+                .then()
+                .log().all()
+                .statusCode(200) // valida a comunicação
+                .body("status", is("Success")) // Status = Sucesso
+                .body("result", is("User authorized successfully."))
+                .extract()
+        ;
+
+        // Extração do Token
+        token = resposta.jsonPath().getString("token");
+        System.out.println("token: " + token);
 
         // Valida
+        Assert.assertTrue(token.length() != 0);
 
+    } // fim do método de geração de token de identificação do usuário
 
-    }// fim do método de geração de Token de identificação do usuário
+    @Test(priority = 3)
+    public void testAuthorized(){
+        // Configura
+        // Dados de Entrada
+        // --> Fornecidos pele AccountEntity através do método testCreateUser - priority = 1
 
+        // Dados de Saída / Resultado Esperado
+        // StatusCode = 200
+        // Response Body = true
 
+        // Executa
+        given()
+                .contentType(ct)
+                .log().all()
+                .body(jsonBody)
+                .when()
+                .post(uri + "Authorized")
+                // Valida
+                .then()
+                .log().all()
+                .statusCode(200)
+        // .body(true) // ToDo: como validar o retorno do body apenas como true
+        ;
 
+    }
+
+    @Test(priority = 4)
+    public void testResearchUserNotAuthorized(){
+        // Configura
+        // Dados de Entrada
+        // userId foi extraido no método testCreateUser e está na memória
+        // Dados de Saída / Resultado Esperado
+        // Status Code = 401, Code = 1200 e Message = User not authorized!
+
+        // Executa
+        given()                                     // Dado // Comandos do REST-assured
+                .contentType(ct)                    // Formato da mensagem
+                .log().all()                        // Exibir tudo que acontece na ida
+                .when()                                     // Quando
+                .get(uri + "User/" + userId)   // Consulta o usuário pelo userId
+                // Valida
+                .then()                                     // Então
+                .log().all()                        // Exibir tudo que acontece na volta
+                .statusCode(401)     // Valida se não está autorizado
+                .body("code", is("1200")) // Valida o código de mensagem "não autorizado"
+                .body("message", is("User not authorized!"))
+        ;                                           // Conclui o bloco do REST-assured
+    }
+
+    @Test(priority = 5)
+    public void testResearchUser(){
+        // Configura
+        // Dados de Entrada
+        // userId foi extraido no método testCreateUser e está na memória
+        // Dados de Saída / Resultado Esperado
+        // userName virá da classe Account e o status code deve ser 200
+
+        // Executa
+        given()                                     // Dado // Comandos do REST-assured
+                .contentType(ct)                    // Formato da mensagem
+                .log().all()                        // Exibir tudo que acontece na ida
+                .header("Authorization", "Bearer " + token)
+                .when()                                     // Quando
+                .get(uri + "User/" + userId)   // Consulta o usuário pelo userId
+                // Valida
+                .then()                                     // Então
+                .log().all()                        // Exibir tudo que acontece na volta
+                .statusCode(200)     // Valida se a conexão teve sucesso
+                .body("userId", is(userId))
+                .body("username", is(account.userName)) // Valida o nome do usuário
+        ;                                           // Conclui o bloco do REST-assured
+    }
+
+    @Test (priority = 6)
+    public void testDeleteUser(){
+        // Configura
+        // Dados de entrada vem do método de teste da criação do usuário(userId)
+        // Resultado esperado é o dódigo de sucesso na exclusão do usuário
+
+        // executa
+        given()
+                .log().all()
+                .contentType(ct)
+                .header("Authorization","Bearer " + token)
+        .when()
+                .delete(uri + "User/" + userId)
+        // Valida
+        .then()
+                .log().all()
+                .statusCode(204)
+
+        ;
+
+    }
 }
