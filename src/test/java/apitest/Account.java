@@ -169,8 +169,9 @@ public class Account {
     @Test (priority = 6)
     public void testDeleteUser(){
         // Configura
-        // Dados de entrada vem do método de teste da criação do usuário(userId).
-        // Resultado esperado é o dódigo de sucesso na exclusão do usuário.
+        // Dados de entrada vem do método de teste da criação do usuário(userId)
+        // Resultado esperado é o dódigo de sucesso na exclusão do usuário
+
 
         // executa
         given()
