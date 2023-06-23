@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import entities.AccountEntity;
 import io.restassured.response.Response;
 import org.testng.Assert;
-import org.testng.ITest;
 import org.testng.annotations.Test;
 import org.testng.ITestContext;
 
@@ -14,7 +13,7 @@ import static org.hamcrest.Matchers.is;
 
 // 2 - Bibliotecas
 // 3 - Classe
-public class Account {
+public class TestAccount {
     // 3.1 - Atributos
     String userId;
     String ct = "application/json"; // contentType da API

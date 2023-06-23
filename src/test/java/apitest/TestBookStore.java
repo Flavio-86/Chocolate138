@@ -7,12 +7,12 @@ import org.testng.ITestContext;
 
 import static io.restassured.RestAssured.given;
 
-public class BookStore {
+public class TestBookStore {
 
     String uri = "https://bookstore.toolsqa.com/BookStore/v1/"; // Endereço Base
     String ct = "application/json";
 
-    Account account = new Account(); // Instancia a classe Account
+    TestAccount account = new TestAccount(); // Instancia a classe Account
 
     @BeforeMethod // Antes de cada @Test
     public void setUp(ITestContext context){
