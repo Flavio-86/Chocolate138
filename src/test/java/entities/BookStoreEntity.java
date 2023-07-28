@@ -1,7 +1,7 @@
 package entities;
 
 public class BookStoreEntity {
-    String userId;
+    public String[] code; // Lista de livros
 
     // ToDo: completar o mapeamento dos campos da classe
 

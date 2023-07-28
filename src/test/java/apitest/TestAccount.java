@@ -29,7 +29,7 @@ public class TestAccount {
 
     // Método #1 - Criar Usuário
     @Test(priority = 1)
-    public void testCreateUser(){
+    public void testCreateUser(ITestContext context){
         // Arrange - Configura
 
         account.userName = "charlie620"; // entrada e saida (resultado esperado)

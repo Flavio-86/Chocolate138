@@ -1,0 +1,70 @@
+Testes Web
+Aplicações Web
+- sites
+- Intranet (portal interno da empresa)
+- Extranet (integração com parceiros e fornecedores)
+
+3 Formas de automatizar:
+- Gravação - Record & Play - Selenium IDE
+- Programação - Direto na IDE com os frameworks como selenium WebDriver e Cypress
+  Exitem alguns modelos de arquitetura ( forma como organizarmos o código fonte):
+  > Simples: Tudo em 1 script
+  > Associada com práticos de BDD: Selenium + Cucumber: 1 script de feature em Gherkin + script com passos
+  > Page Object / Page Factory: 1 mapeamento por página, 1 feature e 1 com os passos
+
+
+- Hibrido - Usa a gravação como acelerador e depois continua por programação
+
+Selenium
+- Framework mais tradicional de automação web
+- EUA, trabalhavam para ThoughtWorks (TW)
+- Open source, gratuito
+- 2004
+
+Diferenciais:
+- Multi Sistema Operacional: Windows, linux, OSX, e outros
+- Multi Browser: Chrome, Firefox, Opera, Safari, Edge
+- Multi Linguagem: C#, Java, JavaScript, Pyton, Ruby, Excel VBA, etc
+
+Curiosidades:
+-Nome: Elemento Quimico, metálico, Simbolo SE
+ > Mercury > HP > Borland QA Runner
+ > Mineral é usado para fazer shampo anti caspa, alto-falantes e * peticidas *
+
+Selenium IDE
+- Criado 2007
+- Japão - TW - Mulher
+- Criar uma ferramenta de produtividade para facilitar a automação de teste
+- Até 2010, aconteceram vários problemas e foi acusada de escrever muito código
+- De 2017 a 2018, parou de exportar código (funcionalidade principal)
+- É uma extenção para navegadores: Chrome, Firefox e Edge
+
+Imagine uma Sprint de 1 semana
+
+    Segunda        |     Terça       |  Quarta          |   Quinta          |   Sexta
+Planejamento             Organizar      T.Manual(6h)        T.Manual(6h)
+Critério de Aceite       Prep.Massa     Abrir defeitos      Abrir defeitos
+
+
+Configurações iniciais do selenium WebDriver
+- Importou a biblioteca selenium WebDriver no www.mnvrepository.com
+- Ajustes e importações da biblioteca e de outros
+- Instalar driver dos navegadores
+
+Código (Biblioteca) ---> Driver ---------> Browser
+                         (CrhomeDriver)     (Chrome)
+
+Além de existir um driver diferente para cada navegador, alguns desses drivers mudam por versão
+
+Existem diferças formas de instalar o driver:
+1 - baixar o driver e adicionar em uma pasta do projeto
+2 - baixar o driver e publicar em uma pasta central
+3 - usar a biblioteca WebDriverManager
+
+Existem 3 desafios frequentes na automação de teste
+1 - localizadores / seletores / identificadores de elementos
+2 - sincronismo / esperas / wait (temporario / implicity / explicity / fluent)
+3 - "Programação Exótica"
+
+
+
