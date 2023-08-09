@@ -8,7 +8,7 @@
 #      E exibe o link do carrinho de compras
 #      Quando clica no produto "Sauce Labs Backpack"
 
-Feature: Select Product in Store
+  Feature: Select Product in Store
    Scenario: Selecting Product with Success
       Given I access SauceDemo store
       When I filled a user "standard_user" and password "secret_sauce"
