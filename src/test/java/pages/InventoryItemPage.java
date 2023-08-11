@@ -13,20 +13,25 @@ public class InventoryItemPage extends CommonPage {
     @FindBy(css = "div.inventory_details_price")
     WebElement lblPrecoProduto;
 
+
+
     // Construtor
     public InventoryItemPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }
 
-    // Função e Metodos
+    // Funções e Métodos
     public String lerTituloDoProduto(){
         return lblTituloProduto.getText();
     }
 
-    public String lerPrecoProduto(){
+    public String lerPrecoDoProduto(){
         return lblPrecoProduto.getText();
     }
+
+
+
 
 
 }

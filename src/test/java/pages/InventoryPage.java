@@ -7,9 +7,8 @@ import org.openqa.selenium.support.PageFactory;
 public class InventoryPage extends CommonPage {
     // Mapeamento
 
-   // @FindBy(id = "item_4_title_link")
-   // WebElement lnkTituloProduto;
-
+    // @FindBy(id = "item_4_title_link")
+    //WebElement lnkTituloProduto;
 
     // Construtor
     public InventoryPage(WebDriver driver) {
@@ -19,10 +18,8 @@ public class InventoryPage extends CommonPage {
 
     // Funções e Métodos
 
-
     public void clicarNoTituloDoProduto(String productId){
-        String idDinamico = "item_"+ productId +"_title_link";
+        String idDinamico = "item_" + productId + "_title_link";
         driver.findElement(By.id(idDinamico)).click();
     }
-
 }

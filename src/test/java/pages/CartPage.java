@@ -17,14 +17,13 @@ public class CartPage extends CommonPage {
     WebElement lblPrecoProduto;
 
     @FindBy(css = "div.cart_quantity")
-    WebElement lblQuatidade;
+    WebElement lblQuantidade;
 
-    @FindBy(css = "btn.btn_secondary.btn_small.cart_button")
+    @FindBy(css = "btn btn_secondary btn_small cart_button" )
     WebElement btnRemover;
 
     @FindAll(@FindBy(css = "div.inventory_item_name"))
     List<WebElement> lista;
-
 
 
     // Construtor
@@ -33,8 +32,8 @@ public class CartPage extends CommonPage {
         PageFactory.initElements(driver, this);
     }
 
-    // Funções e Metodos
-    public String leTituloProdutoNoCarrinho(){
+    // Funções e Métodos
+    public String lerTituloProdutoNoCarrinho() {
         return lblTituloProduto.getText();
     }
 
@@ -43,15 +42,14 @@ public class CartPage extends CommonPage {
     }
 
     public String lerQuantidadeDoProdutoNoCarrinho(){
-        return lblQuatidade.getText();
+        return lblQuantidade.getText();
     }
 
-    public void  clicarNoBotaoRemoverNoCarrinho(){
+    public void clicarNoBotaoRemovernoCarrinho(){
         btnRemover.click();
     }
 
     public int contarProdutosNoCarrinho(){
         return lista.size();
     }
-
 }

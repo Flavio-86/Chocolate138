@@ -13,9 +13,9 @@ import static org.testng.Assert.assertTrue;
 
 public class selectProductPO {
     // Atributos
-    final WebDriver driver;  // este é objeto final do Selenium (Uma única bola em Campo)
+    final WebDriver driver; // este é objeto final do Selenium (Uma única bola em campo)
 
-    // Definindo objetos para receber os mapeamentos de página já importados
+    // Definindo objetos para receber os mapeamentos de páginas já importados
     private CartPage cartPage;
     private HomePage homePage;
     private InventoryItemPage inventoryItemPage;
@@ -23,16 +23,13 @@ public class selectProductPO {
 
     // Construtor
     public selectProductPO(Base base){
-        driver = base.driver;  // passagem de bola = integração Selenium dentro e fora
+        this.driver = base.driver;  // passagem de bola = integração Selenium dentro e fora
     }
 
     @Given("I access SauceDemo store PO")
     public void i_access_sauce_demo_store() {
         driver.get("https://www.saucedemo.com");
-        inventoryPage = new InventoryPage(this.driver);
-        inventoryItemPage = new InventoryItemPage(this.driver);
-        cartPage = new CartPage(this.driver);
-
+        this.homePage = new HomePage(this.driver);
     }
 
     @When("I filled a user {string} and password {string} PO")
@@ -42,7 +39,9 @@ public class selectProductPO {
     @And("I click in Login PO")
     public void i_click_in_login() {
         homePage.clicarNoBotaoLogin();
+        inventoryPage = new InventoryPage(this.driver);
     }
+    // @Then("show page's title {string}")
     @Then("I verify the page's title {string} PO")
     public void show_page_s_title(String pageTitle) {
         // Verifica se o titulo da página coincide com o informado na feature
@@ -57,6 +56,7 @@ public class selectProductPO {
     public void i_click_in_product(String productId) {
         // Clica no elemento correspondente ao código do produto informado na feature
         inventoryPage.clicarNoTituloDoProduto(productId);
+        inventoryItemPage = new InventoryItemPage(this.driver);
     }
     @Then("I verify the product title {string} PO")
     public void i_verify_the_product_title(String productTitle) {
@@ -66,7 +66,7 @@ public class selectProductPO {
     @And("I verify the product price {string} PO")
     public void i_verify_the_product_price(String productPrice) {
         // Verifica se o preço do produto corresponde ao informado na feature
-        assertEquals(inventoryItemPage.lerPrecoProduto(), productPrice);
+        assertEquals(inventoryItemPage.lerPrecoDoProduto(), productPrice);
     }
     @And("I click in Add to Cart PO")
     public void i_click_in_add_to_cart() {
@@ -78,11 +78,11 @@ public class selectProductPO {
     public void i_click_in_cart_icon() {
         // Clica no icone do carrinho de compras
         inventoryPage.clicarNoCarrinho();
+        cartPage = new CartPage(this.driver);
     }
 
     @And("I verify the quantity is {string} PO")
     public void i_verify_the_quantity_is(String quantity) {
-
         // Verifica se a quantidade corresponde a feature
         assertEquals(cartPage.lerQuantidadeDoProdutoNoCarrinho(), quantity);
     }
@@ -91,12 +91,11 @@ public class selectProductPO {
     public void i_verify_the_product_title_in_cart(String productTitle) throws InterruptedException {
 
         for (int i = 1; i < cartPage.contarProdutosNoCarrinho(); i++) {
-            cartPage.clicarNoBotaoRemoverNoCarrinho();
+            cartPage.clicarNoBotaoRemovernoCarrinho();
         }
 
-        assertEquals(cartPage.leTituloProdutoNoCarrinho(), productTitle);
+        assertEquals(cartPage.lerTituloProdutoNoCarrinho(), productTitle);
         Thread.sleep(2000);
-
     }
 
     @Then("I verify the product price {string} in cart PO")
@@ -104,7 +103,4 @@ public class selectProductPO {
         assertEquals(cartPage.lerPrecoProdutoNoCarrinho(), productPrice);
     }
 
-    public void setHomePage(HomePage homePage) {
-        this.homePage = homePage;
-    }
 }
